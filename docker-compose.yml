@@ -25,7 +25,7 @@ services:
 
   linkhub:
     image: ghcr.io/${GH_USER}/linkhub:${TAG:-latest}
-    container_name: growry
+    container_name: linkhub
     restart: always
     ports:
       - "3001:3000"
