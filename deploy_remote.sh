@@ -6,4 +6,4 @@ set -euo pipefail
 : "${TARGET_INFRA_DIR:?}"
 
 ssh -i "${SSH_KEY_PATH}" -t "${TARGET_INSTANCE}" \
-  "cd ${TARGET_INFRA_DIR} && ./prd_compose_deploy.sh"
+  "cd ${TARGET_INFRA_DIR} && bash ./prd_compose_deploy.sh"
