@@ -6,7 +6,7 @@ echo "🔄 Pull latest images..."
 docker compose pull
 
 echo "🚀 Recreate only updated services..."
-docker compose up -d --no-deps --remove-orphans growry linkhub
+docker compose up -d --no-deps --force-recreate growry linkhub
 
 echo "📦 Status:"
 docker compose ps
