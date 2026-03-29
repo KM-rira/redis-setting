@@ -1,8 +1,15 @@
 #!/usr/bin/env bash
 
+set -e
+
+echo "🔄 Pull latest images..."
 docker compose pull
-docker compose down
-docker compose up -d --build
-sleep 5
-docker compose logs
-echo "do 'docker compose logs -f'"
+
+echo "🚀 Recreate only updated services..."
+docker compose up -d --no-deps --remove-orphans growry linkhub
+
+echo "📦 Status:"
+docker compose ps
+
+echo "📜 Logs:"
+docker compose logs --tail=50
