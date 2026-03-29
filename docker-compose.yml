@@ -23,5 +23,15 @@ services:
     volumes:
       - ./db:/app/db
 
+  linkhub:
+    image: ghcr.io/${GH_USER}/linkhub:${TAG:-latest}
+    container_name: growry
+    restart: always
+    ports:
+      - "3001:3000"
+    environment:
+      NODE_ENV: production
+      PORT: 3000
+
 volumes:
   redis-data:
