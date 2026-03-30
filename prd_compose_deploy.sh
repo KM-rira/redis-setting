@@ -5,16 +5,17 @@ set -e
 echo "🔄 Pull latest images..."
 docker compose pull
 
-echo "🚀 Recreate only updated services..."
-docker compose up -d --no-deps --force-recreate growry linkhub
+echo "🐘 Start postgres first..."
+docker compose up -d postgres
 
 echo "⏳ Waiting for PostgreSQL to be ready..."
-
-# postgresコンテナ内で接続可能になるまで待つ
-until docker compose exec -T postgres pg_isready -U appuser > /dev/null 2>&1; do
+until docker compose exec -T postgres pg_isready -U "$POSTGRES_USER" > /dev/null 2>&1; do
   sleep 2
   echo "⏳ waiting..."
 done
+
+echo "🚀 Recreate app services..."
+docker compose up -d --no-deps --force-recreate growry linkhub
 
 echo "🛠 Running DB init script..."
 docker compose exec -T growry npm run db:init
