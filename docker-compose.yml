@@ -10,6 +10,19 @@ services:
     command: redis-server --appendonly yes
     restart: unless-stopped
 
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+
   growry:
     image: ghcr.io/${GH_USER}/growry:${TAG:-latest}
     restart: always
@@ -18,8 +31,9 @@ services:
     environment:
       NODE_ENV: production
       PORT: 3000
-    volumes:
-      - ./db:/app/db
+      DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+    depends_on:
+      - postgres
 
   linkhub:
     image: ghcr.io/${GH_USER}/linkhub:${TAG:-latest}
@@ -32,3 +46,4 @@ services:
 
 volumes:
   redis-data:
+  postgres-data:
